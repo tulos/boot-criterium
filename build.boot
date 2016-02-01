@@ -11,8 +11,7 @@
       :url         "https://github.com/tulos/boot-criterium"
       :scm         {:url "https://github.com/tulos/boot-criterium"}
       :license     {"Eclipse Public License"
-                    "http://www.eclipse.org/legal/epl-v10.html"}}
- push {:gpg-sign false})
+                    "http://www.eclipse.org/legal/epl-v10.html"}})
 
 (require '[adzerk.bootlaces :refer :all])
 (bootlaces! version)
