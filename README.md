@@ -2,7 +2,7 @@
 
 [](dependency)
 ```clojure
-[tulos/boot-criterium "0.1.0-SNAPSHOT"] ;; no releases yet, have to build it yourself
+[tulos/boot-criterium "0.1.0"] ;; latest release
 ```
 [](/dependency)
 
