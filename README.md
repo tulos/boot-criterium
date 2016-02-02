@@ -126,6 +126,15 @@ with different dependency versions. Let's try running a simple `(reduce +
 
 You'd have to start three REPLs to do the same without Boot!
 
+### Flags
+
+When running for the first time you will want to set the `-W` (warn) flag. This
+way Criterium will report whether you have any JVM options present that can
+impeded the benchmark. You can then fix the JVM options by setting the
+`BOOT_JVM_OPTIONS` env variable.
+
+### Docs
+
 For complete documentation see:
 
 ```clojure
@@ -137,8 +146,6 @@ and
 ```clojure
 (doc report)
 ```
-
-for the full documentation.
 
 ## License
 
