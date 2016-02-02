@@ -2,7 +2,7 @@
 
 [](dependency)
 ```clojure
-[tulos/boot-criterium "0.1.0"] ;; latest release
+[tulos/boot-criterium "0.2.0"] ;; latest release
 ```
 [](/dependency)
 

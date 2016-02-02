@@ -1,5 +1,5 @@
 (def project 'tulos/boot-criterium)
-(def version "0.2.0-SNAPSHOT")
+(def version "0.2.0")
 
 (set-env! :resource-paths #{"src"}
           :dependencies '[[adzerk/bootlaces "0.1.13" :scope "test"]])
