@@ -4,13 +4,11 @@ change log follows the conventions of [keepachangelog.com](http://keepachangelog
 
 ## [Unreleased]
 ### TODO
-- Capture Criterium output
-    + flags:
-        * flag for debug output (-D)
-        * flag for warn output (-W) - rebind `*report-warn*`, also several `(println "WARNING...")` statements
-        * flag for progress output (-P) - already exists
-    + rebind `*out*` and copy whatever is written through the `boot.util/info`
-      machinery
+
+## 0.2.0 - 2016-02-02
+### Added
+- `bench` flags for debug (-D)/warn (-W) output
+- pipe Criterium status messages through `boot.util info/dbug/warn`
 
 ## 0.1.0 - 2016-02-01
 ### Added

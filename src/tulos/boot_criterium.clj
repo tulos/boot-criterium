@@ -54,6 +54,8 @@
    d dependencies ID:VER      [[sym str]] "vector of goal dependencies"
    c criterium-opts KEY=VAL   edn         "options to the Criterium"
    P progress                 bool        "show progress report?"
+   D debug                    bool        "show debug output?"
+   W warn                     bool        "show warning output?"
    Q quick                    bool        "run a quick benchmark?"]
   (let [bench-pod (bench-pod dependencies)]
     (core/with-pre-wrap fs
@@ -61,7 +63,9 @@
             result (pod/with-eval-in bench-pod
                      (require '[tulos.boot-criterium.criterium])
                      (tulos.boot-criterium.criterium/run-goal
-                       '~goal ~criterium-opts ~quick ~progress))
+                       '~goal ~criterium-opts
+                       ~{:quick? quick, :progress? progress
+                         :debug? debug, :warn? warn}))
             t (core/tmp-dir!)
             out-name (str (cleanup-code-label label) ".edn")
             out-dir (ensure-out-dir t)]
