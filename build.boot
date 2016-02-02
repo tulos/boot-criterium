@@ -15,9 +15,3 @@
 
 (require '[adzerk.bootlaces :refer :all])
 (bootlaces! version)
-
-(deftask install-jar []
-  (comp (pom) (jar) (install)))
-
-(deftask deploy-jar []
-  (comp (pom) (jar) (push)))
