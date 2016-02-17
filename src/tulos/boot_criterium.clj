@@ -5,7 +5,7 @@
             [boot.pod :as pod]))
 
 (def ^:private criterium-deps
-  '[[criterium "0.4.3"]])
+  '[[criterium "0.4.4"]])
 
 (defn- ensure-out-dir [parent]
   (doto (io/file parent "criterium")

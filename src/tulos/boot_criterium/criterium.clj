@@ -43,14 +43,6 @@
      :outlier-effect (crit/outlier-effect outlier-variance)
      :evaluation-count (* execution-count sample-count)}))
 
-(defmacro binding-var [[v new-v] & body]
-  `(let [orig# ~v]
-     (try
-       (alter-var-root (var ~v) (constantly ~new-v))
-       ~@body
-       (finally
-         (alter-var-root (var ~v) (constantly orig#))))))
-
 (defn- with-ln [f]
   (fn [& args]
     (let [s (-> (string/join " " args)
@@ -60,35 +52,19 @@
     (f "\n")))
 
 (defn- with-progress-at-boot-info [f]
-  (binding-var [crit/progress (with-ln bu/info)]
+  (with-redefs [crit/progress (with-ln bu/info)]
     (binding [crit/*report-progress* true]
       (f))))
 
 (defn- with-debug-at-boot-dbug [f]
-  (binding-var [crit/debug (with-ln bu/dbug)]
+  (with-redefs [crit/debug (with-ln bu/dbug)]
     (binding [crit/*report-debug* true]
       (f))))
 
-(defn- println-warnings [& args]
-  (let [s (string/join " " args)]
-    (if (.startsWith s "WARNING:")
-      ((with-ln bu/warn) (.substring s 8))
-      (println s))))
-
-(defn- println-no-warnings [& args]
-  (let [s (string/join " " args)]
-    (when-not (.startsWith s "WARNING:")
-      (println s))))
-
 (defn- with-warn-at-boot-warn [f]
-  (binding-var [crit/warn (with-ln bu/warn)]
-    (binding-var [clojure.core/println println-warnings]
-      (binding [crit/*report-warn* true]
-        (f)))))
-
-(defn- with-suppress-warn [f]
-  (binding-var [clojure.core/println println-no-warnings]
-    (f)))
+  (with-redefs [crit/warn (with-ln bu/warn)]
+    (binding [crit/*report-warn* true]
+      (f))))
 
 (defn run-goal [code params {:keys [quick? progress? debug? warn?]}]
   (let [f (resolve-code code)
@@ -103,7 +79,7 @@
             f)
         f (if warn?
             #(with-warn-at-boot-warn f)
-            #(with-suppress-warn f))]
+            f)]
     (bu/dbug "Running a %s benchmark for %s..."
              (when quick? "quick" "full") code)
     (-> (f)
