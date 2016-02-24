@@ -28,6 +28,11 @@
       (.replaceAll "\\/" "_")
       (.replaceAll " " "_")))
 
+(defn- as-executable [code]
+  (if (symbol? code)
+    `(tulos.boot-criterium.util/resolve-var '~code)
+    `(fn [] ~code)))
+
 (deftask bench
   "Run a benchmarck of the specified goal function.
 
@@ -49,7 +54,9 @@
     - `warmup-jit-period`: long (ns)
     - `tail-quantile`: double
     - `bootstrap-size`: int"
-  [g goal GOAL                code        "qualified name of the goal function to run or a valid form"
+  [g goal GOAL                code        "qualified name of the goal function to run (or a valid form)"
+   b before BEFORE            code        "qualified name of the setup function to run (or a valid form)"
+   a after AFTER              code        "qualified name of the teardown function to run (or a valid form)"
    l label LABEL              str         "label for the goal"
    d dependencies ID:VER      [[sym str]] "vector of goal dependencies"
    c criterium-opts KEY=VAL   edn         "options to the Criterium"
@@ -63,7 +70,10 @@
             result (pod/with-eval-in bench-pod
                      (require '[tulos.boot-criterium.criterium])
                      (tulos.boot-criterium.criterium/run-goal
-                       '~goal ~criterium-opts
+                       ~{:goal (as-executable goal)
+                         :before (when before (as-executable before))
+                         :after (when after (as-executable after))}
+                       ~criterium-opts
                        ~{:quick? quick, :progress? progress
                          :debug? debug, :warn? warn}))
             t (core/tmp-dir!)

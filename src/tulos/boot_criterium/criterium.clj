@@ -3,12 +3,7 @@
             [clojure.string :as string]
             [criterium.core :as crit]
             [boot.util :as bu]
-            [tulos.boot-criterium.util :as u]))
-
-(defn- resolve-code [code]
-  (if (symbol? code)
-    (u/resolve-var code)
-    (eval `(fn [] ~code))))
+            [tulos.boot-criterium.util]))
 
 (defn- remove-criterium-types [result]
   (walk/postwalk
@@ -66,11 +61,10 @@
     (binding [crit/*report-warn* true]
       (f))))
 
-(defn run-goal [code params {:keys [quick? progress? debug? warn?]}]
-  (let [f (resolve-code code)
-        f (if quick?
-            #(crit/quick-benchmark* f params)
-            #(crit/benchmark* f params))
+(defn run-goal [{:keys [before after goal]} params {:keys [quick? progress? debug? warn?]}]
+  (let [f (if quick?
+            #(crit/quick-benchmark* goal params)
+            #(crit/benchmark* goal params))
         f (if progress?
             #(with-progress-at-boot-info f)
             f)
@@ -81,7 +75,11 @@
             #(with-warn-at-boot-warn f)
             f)]
     (bu/dbug "Running a %s benchmark for %s..."
-             (when quick? "quick" "full") code)
-    (-> (f)
-        (remove-criterium-types)
-        (interpret-measurements))))
+             (if quick? "quick" "full") goal)
+    (try
+      (when before (before))
+      (-> (f)
+          (remove-criterium-types)
+          (interpret-measurements))
+      (finally
+        (when after (after))))))
