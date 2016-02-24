@@ -68,7 +68,7 @@ the filesystem using the Boot's built-in `target` task or use the `report` task
 provided here:
 
 ```clojure
-(report :format 'table, :stdout true)
+(report :formatter 'table, :stdout true)
 ```
 
 The nice thing about `report` is that it operates on the results of all the
@@ -78,7 +78,7 @@ preceding `bench` tasks:
 (boot
   (bench :goal 'my/function-1)
   (bench :goal 'my/function-2)
-  (report :format 'table)
+  (report :formatter 'table)
   (target))
 ```
 
@@ -115,7 +115,7 @@ with different dependency versions. Let's try running a simple `(reduce +
   (bench :label "1.6", :goal code, :dependencies '[[org.clojure/clojure "1.6.0"]])
   (bench :label "1.7", :goal code, :dependencies '[[org.clojure/clojure "1.7.0"]])
   (bench :label "1.8", :goal code, :dependencies '[[org.clojure/clojure "1.8.0"]])
-  (report :format 'table, :stdout true))
+  (report :formatter 'table, :stdout true))
 
 | :benchmark/goal |      :mean |   :variance |   :upper-q |   :lower-q | :evaluation-count | :outlier-effect |
 |-----------------+------------+-------------+------------+------------+-------------------+-----------------|
