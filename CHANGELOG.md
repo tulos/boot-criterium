@@ -5,6 +5,10 @@ change log follows the conventions of [keepachangelog.com](http://keepachangelog
 ## [Unreleased]
 ### TODO
 
+## 0.3.0 - 2016-02-25
+### Added
+- `bench` flags for running code before (-b) and after (-a) the goal
+
 ## 0.2.1 - 2016-02-17
 ### Changed
 - updated Criterium to 0.4.4 (minor fixes)
@@ -18,4 +22,4 @@ change log follows the conventions of [keepachangelog.com](http://keepachangelog
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/tulos/boot-criterium/compare/0.2.1...HEAD
+[Unreleased]: https://github.com/tulos/boot-criterium/compare/0.3.0...HEAD
