@@ -36,7 +36,7 @@
 (deftask bench
   "Run a benchmarck of the specified goal function.
 
-  As of Criterium 0.4.3 `params` may take the following:
+  As of Criterium 0.4.4 `params` may take the following:
 
   report options:
 
